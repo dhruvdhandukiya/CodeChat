@@ -1,0 +1,117 @@
+.detail {
+    flex: 1;
+
+    .user {
+        padding: 30px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        border-bottom: 1px solid #dddddd35;
+
+        img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+    }
+
+    .info {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .option {
+            .title {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                img {
+                    width: 30px;
+                    height: 30px;
+                    background-color: rgba(17, 25, 40, 0.3);
+                    padding: 10px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                }
+            }
+
+            .photos,
+            .files {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                margin-top: 20px;
+
+                .photoItem,
+                .fileItem {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    .photoDetail,
+                    .fileDetail {
+                        display: flex;
+                        gap: 20px;
+                        align-items: center;
+
+                        img {
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                        }
+
+                        span {
+                            font-size: 14px;
+                            color: lightgray;
+                            font-weight: 300;
+                        }
+                    }
+
+                    .icon {
+                        width: 35px;
+                        height: 35px;
+                        cursor: pointer;
+                        background-color: rgba(17, 25, 40, 0.3);
+                        padding: 10px;
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            gap: 10px; 
+        
+            button {
+                width: 80%; 
+                padding: 12px;
+                background-color: rgba(230, 74, 105, 0.553);
+                color: white;
+                border: none;
+                cursor: pointer;
+                border-radius: 5px;
+                text-align: center;
+        
+                &:hover {
+                    background-color: rgba(230, 74, 105, 0.796);
+                }
+
+                &.logout{
+                    padding: 12px;
+                    background-color: rgba(0, 0, 255, 0.554);
+
+                    &:hover{
+                        background-color: rgba(0, 0, 255, 0.798);
+                    }
+                }
+            }
+        }
+    }
+}
