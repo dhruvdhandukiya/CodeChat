@@ -55,6 +55,11 @@
                 padding: 20px;
                 border: none;
                 font-weight: 500;
+
+                &:disabled{
+                    cursor: not-allowed;
+                    background-color: #1f8ff192;
+                }
             }
         }
     }
