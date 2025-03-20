@@ -1,66 +1,83 @@
-import React, {useState, useEffect} from 'react';
-import "./chatList.css"
-import AddUser from '../../addUser/AddUser';
-import { useUserStore } from "../../../library/UserStore"
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
-import { db } from '../../../library/Firebase';
+import React, { useState, useEffect } from "react";
+import "./chatList.css";
+import AddUser from "../../addUser/AddUser";
+import { useUserStore } from "../../../library/UserStore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { db } from "../../../library/Firebase";
+import { useChatStore } from "../../../library/ChatStore";
 
-const chatList = () => {
+const ChatList = () => {
+  const [chats, setChats] = useState([]);
+  const [addMode, setAddMode] = useState(false);
 
-    const[chats, setChats] = useState([]);
-    const[addMode, setAddMode] = useState(false);
+  const { currentUser } = useUserStore();
+  const { chatId, changeChat } = useChatStore();
 
-    const {currentUser} = useUserStore()
+  useEffect(() => {
+    if (!currentUser?.id) return;
 
-    useEffect(() => {
-        const unSub = onSnapshot(doc(db, "userchats", currentUser.id), async(res) => {
-           const items = res.data().chats;
+    const unSub = onSnapshot(doc(db, "userchats", currentUser.id), async (res) => {
+      const items = res.data()?.chats || [];
 
+      const promises = items.map(async (item) => {
+        const userDocRef = doc(db, "users", item.receiverId);
+        const userDocSnap = await getDoc(userDocRef);
 
-           const promises = items.map( async(item) => {
-                const userDocRef = doc(db, "users", item.receiverId);
-                const userDocSnap = await getDoc(userDocRef);
+        const user = userDocSnap.data();
 
-                const user = userDocSnap.data();
+        return { ...item, user };
+      });
 
-                return {...item, user};
-           });
+      const chatData = await Promise.all(promises);
 
-           const chatData = await Promise.all(promises);
+      setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
+    });
 
-           setChats(chatData.sort((a,b) => b.updatedAt - a.updatedAt));
-        })
+    return () => {
+      unSub();
+    };
+  }, [currentUser?.id]);
 
-        return () => {
-            unSub()
-        }
-    },[currentUser.id]);
+  const handleSelect = (chat) => {
+    if (!chat?.chatId || !chat?.user) {
+      console.error("Invalid chat data:", chat);
+      return;
+    }
 
-    return ( 
-        <div className="chatList">
-        <div className="search">
-        <div className = "searchBar">
-        <img src = "./search.png" alt = ""></img>
-        <input type = "text" placeholder="Search"></input>
+    changeChat(chat.chatId, chat.user);
+  };
+
+  return (
+    <div className="chatList">
+      <div className="search">
+        <div className="searchBar">
+          <img src="./search.png" alt="" />
+          <input type="text" placeholder="Search" />
         </div>
-        <img src = {addMode ? "./minus.png" : "./plus.png"} 
-             alt = "" 
-             className = "add"
-             onClick = {() => setAddMode((prev => !prev))}></img>
+        <img
+          src={addMode ? "./minus.png" : "./plus.png"}
+          alt=""
+          className="add"
+          onClick={() => setAddMode((prev) => !prev)}
+        />
+      </div>
+      {chats.map((chat) => (
+        <div
+          className="item"
+          key={chat.chatId}
+          onClick={() => handleSelect(chat)}
+          style={{ cursor: "pointer" }} 
+        >
+          <img src={chat.user.avatar || "./avatar.png"} alt="" />
+          <div className="texts">
+            <span>{chat.user.username}</span>
+            <p>{chat.lastMessage}</p>
+          </div>
         </div>
-        {chats.map((chat) => (
-            <div className = "item" key = {chat.chatId}>
-                <img src = {chat.user.avatar || "./avatar.png"} alt = ""/>
-                <div className = "texts">
-                    <span>{chat.user.username}</span>
-                    <p>{chat.lastMessage}</p>
-                </div>
-            </div>
-        ))}
-         {addMode && <AddUser/>}
-        </div>
-    );
+      ))}
+      {addMode && <AddUser />}
+    </div>
+  );
 };
 
-
-export default chatList
+export default ChatList;
