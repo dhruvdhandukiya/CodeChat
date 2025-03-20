@@ -17,13 +17,13 @@ const chatList = () => {
            const items = res.data().chats;
 
 
-           const promises = items.map( async(res) => {
-                const userDocRef = doc(db, "users", items.receiverId);
+           const promises = items.map( async(item) => {
+                const userDocRef = doc(db, "users", item.receiverId);
                 const userDocSnap = await getDoc(userDocRef);
 
                 const user = userDocSnap.data();
 
-                return {...items, user};
+                return {...item, user};
            });
 
            const chatData = await Promise.all(promises);
@@ -50,9 +50,9 @@ const chatList = () => {
         </div>
         {chats.map((chat) => (
             <div className = "item" key = {chat.chatId}>
-                <img src = "./avatar.png" alt = ""/>
+                <img src = {chat.user.avatar || "./avatar.png"} alt = ""/>
                 <div className = "texts">
-                    <span>{chat.username}</span>
+                    <span>{chat.user.username}</span>
                     <p>{chat.lastMessage}</p>
                 </div>
             </div>
