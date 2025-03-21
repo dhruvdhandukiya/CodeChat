@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Notification from "../notification/Notification";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { auth,db } from "../../library/Firebase";
+import { auth, db } from "../../library/firebase";
 import { doc,setDoc } from "firebase/firestore";
 import { setLogLevel } from "firebase/app";
 

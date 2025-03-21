@@ -1,10 +1,11 @@
 import { doc, getDoc } from "firebase/firestore";
 import { create } from "zustand";
-import { db } from "./Firebase";
+import { db } from "./firebase";
 
 export const useUserStore = create((set) => ({
     currentUser: null,
     isLoading: true,
+    user: null,
     fetchUserInfo: async (uid) => {
         if(!uid) return set({currentUser: null, isLoading: false});
 
@@ -23,5 +24,6 @@ export const useUserStore = create((set) => ({
             console.log(err);
             return set({currentUser: null, isLoading: false});
         }
-    }
-}))
+    },
+    setUser: (userData) => set({ user: userData }),
+}));
