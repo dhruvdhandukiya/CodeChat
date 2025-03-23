@@ -3,10 +3,12 @@ import "./Detail.css";
 import { useChatStore } from "../../library/ChatStore";
 import { arrayRemove, arrayUnion, updateDoc, doc } from "firebase/firestore";
 import { db } from "../../library/firebase";
+import { useUserStore } from "../../library/UserStore";
+
 
 const Detail = () => {
-    const { user, isCurrentUserBlocked, isReceiverBlocked, changeBlock } = useChatStore();
-    const { currentUser } = useChatStore(); 
+    const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock } = useChatStore();
+    const { currentUser } = useUserStore(); 
 
     const handleBlock = async () => {
         if (!user) return;

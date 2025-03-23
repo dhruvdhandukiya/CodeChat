@@ -9,6 +9,7 @@ import { useChatStore } from "../../../library/ChatStore";
 const ChatList = () => {
   const [chats, setChats] = useState([]);
   const [addMode, setAddMode] = useState(false);
+  const[input, setinput] = useState("");
 
   const { currentUser } = useUserStore();
   const { chatId, changeChat } = useChatStore();
@@ -75,13 +76,16 @@ const ChatList = () => {
     }
 };
 
+    const filteredChats = chats.filter((c) => 
+    c.user.username.toLowerCase().includes(input.toLowerCase()));
+
 
   return (
     <div className="chatList">
       <div className="search">
         <div className="searchBar">
           <img src="./search.png" alt="" />
-          <input type="text" placeholder="Search" />
+          <input type="text" placeholder="Search" onChange={(e) => setinput(e.target.value)}/>
         </div>
         <img
           src={addMode ? "./minus.png" : "./plus.png"}
@@ -90,7 +94,7 @@ const ChatList = () => {
           onClick={() => setAddMode((prev) => !prev)}
         />
       </div>
-      {chats.map((chat) => (
+      {filteredChats.map((chat) => (
         <div
           className="item"
           key={chat.chatId}
@@ -100,9 +104,14 @@ const ChatList = () => {
             backgroundColor: chat?.isSeen === false ? "blue" : "transparent" 
         }}
         >
-          <img src={chat.user.avatar || "./avatar.png"} alt="" />
+          <img src={chat.user.blocked.includes(currentUser.id)
+                    ?"./avatar.png"
+                    :chat.user.avatar || "./avatar.png"} 
+                    alt="" />
           <div className="texts">
-            <span>{chat.user.username}</span>
+            <span>{chat.user.blocked.includes(currentUser.id)
+                  ?"User"
+                  :chat.user.username}</span>
             <p>{chat.lastMessage}</p>
           </div>
         </div>
