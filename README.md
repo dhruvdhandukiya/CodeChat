@@ -12,9 +12,11 @@
 
 ## 📸 Screenshots
 
-| Light Mode | Dark Mode |
-|------------|-----------|
-| ![Light Mode](./screenshots/light-mode.png) | ![Dark Mode](./screenshots/dark-mode.png) |
+<img width="952" alt="image" src="https://github.com/user-attachments/assets/56a9eea4-b6fe-4b19-be68-138546f2bfcd" />
+
+
+<img width="953" alt="image" src="https://github.com/user-attachments/assets/48072ad1-2a87-4a38-8f97-76298af1238b" />
+
 
 ---
 
@@ -57,5 +59,5 @@
 
 ---
 
-👨‍💻 Author
-@dhruvdhandukiya
+## Author  
+[@dhruvdhandukiya](https://github.com/dhruvdhandukiya)
